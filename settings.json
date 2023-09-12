@@ -1,0 +1,145 @@
+{
+    "rounds": 5,
+    "passScore": 80,
+    "failScore": 50,
+    "defaultLevel": 1,
+    "preventNegativeValues": true,
+    "levels": [
+        {
+            "name": "Level 1",
+            "description": "Izvrsavaj operacije nad dva broja od 1-5 i ispiši njihov zbir.",
+            "numRange": [
+                1,
+                5
+            ],
+            "operations": [
+                "+"
+            ],
+            "interval": 3,
+            "n": 1
+        },
+        {
+            "name": "Level 2",
+            "description": "Izvrsavaj operacije nad tri broja od 1-5 i ispiši njihov zbir.",
+            "numRange": [
+                1,
+                5
+            ],
+            "operations": [
+                "+"
+            ],
+            "interval": 5,
+            "n": 2
+        },
+        {
+            "name": "Level 3",
+            "description": "Izvrsavaj operacije nad dva broja od 1-5 i ispiši njihov zbir ili razliku.",
+            "numRange": [
+                1,
+                5
+            ],
+            "operations": [
+                "+",
+                "-"
+            ],
+            "interval": 3,
+            "n": 1
+        },
+        {
+            "name": "Level 4",
+            "description": "Izvrsavaj operacije nad tri broja od 1-5 i ispiši njihov zbir ili razliku.",
+            "numRange": [
+                1,
+                5
+            ],
+            "operations": [
+                "+",
+                "-"
+            ],
+            "interval": 5,
+            "n": 2
+        },
+        {
+            "name": "Level 5",
+            "description": "Izvrsavaj operacije nad 2 broja od 1-10 i ispiši njihov zbir.",
+            "numRange": [
+                1,
+                10
+            ],
+            "operations": [
+                "+"
+            ],
+            "interval": 5,
+            "n": 1
+        },
+        {
+            "name": "Level 6",
+            "description": "Izvrsavaj operacije nad 2 broja od 1-10 i ispiši njihov zbir ili raliku.",
+            "numRange": [
+                1,
+                10
+            ],
+            "operations": [
+                "+",
+                "-"
+            ],
+            "interval": 5,
+            "n": 1
+        },
+        {
+            "name": "Level 7",
+            "description": "Izvrsavaj operacije nad 3 broja od 1-10 i ispiši njihov zbir ili raliku.",
+            "numRange": [
+                1,
+                10
+            ],
+            "operations": [
+                "+",
+                "-"
+            ],
+            "interval": 6,
+            "n": 2
+        },
+        {
+            "name": "Level 8",
+            "description": "Izvrsavaj operacije nad 2 broja od 1-33 i ispiši njihov zbir ili raliku.",
+            "numRange": [
+                1,
+                33
+            ],
+            "operations": [
+                "+",
+                "-"
+            ],
+            "interval": 5,
+            "n": 1
+        },
+        {
+            "name": "Level 9",
+            "description": "Izvrsavaj operacije nad 3 broja od 1-33 i ispiši njihov zbir.",
+            "numRange": [
+                1,
+                33
+            ],
+            "operations": [
+                "+"
+            ],
+            "interval": 5,
+            "n": 2
+        },
+        {
+            "name": "Level 10",
+            "description": "Izvrsavaj operacije nad 3 broja od 1-33 i ispiši njihov zbir ili razliku.",
+            "numRange": [
+                1,
+                33
+            ],
+            "operations": [
+                "+",
+                "-"
+            ],
+            "interval": 5,
+            "n": 2
+        }
+    ]
+}
