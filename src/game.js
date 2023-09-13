@@ -13,19 +13,11 @@ export class Game {
         this.settings = getDefaultSettings();
         this.currentLevel = this.settings.defaultLevel;
     }
-    start() {
-        console.log('Start game');
-        this.run();
-    }
     async startNewGame() {
         this.readline = readline.createInterface({ input, output });
-        const answer = await this.readline.question('Nova igra? (da/ne) ');
-        if (answer == 'da') {
-            this.gameLevel = this.settings.levels[this.currentLevel]
-            this.numbers = this.generateNumbers();
-            this.operations = this.generateOperations();
-            this.hits = 0;
-            console.log(this.gameLevel.description);
+        this.setGamePlayParameters();
+        this.printLevelDescription();
+        if (await this.readline.question('Nova igra? (da/ne) ') == 'da') {
             this.run();
         } else {
             this.readline.close();
@@ -36,27 +28,21 @@ export class Game {
         let counter = 0;
         const interval = setInterval(async () => {
             this.sayNumber(counter);
-            if (counter == this.numbers.length) {
-                clearInterval(interval);
-                this.printResult();
-                this.readline.close();
-                this.startNewGame();
-            } else if (counter >= this.gameLevel.n && counter < this.numbers.length) {
-                let operands = this.numbers.slice(counter - this.gameLevel.n, counter + 1);
-                let operations = this.operations.slice(counter - this.gameLevel.n, counter);
-                let result = this.calculateResult(operands, operations);
-                counter++;
-                const answer = await this.readline.question('Resultat: ')
-                if (parseInt(answer) == result) {
-                    console.log('√');
-                    this.hits++
-                } else {
-                    console.log('X');
-                };
-            } else {
-                counter++;
-            }
+            if (counter == this.numbers.length) this.stopGame(interval);
+
+            if (counter >= this.gameLevel.n && counter < this.numbers.length) {
+                const operands = this.numbers.slice(counter - this.gameLevel.n, counter + 1);
+                const operations = this.operations.slice(counter - this.gameLevel.n, counter);
+                counter++
+                this.runTrial(operands, operations)
+            } else counter++
         }, this.gameLevel.interval * 1000);
+    }
+    setGamePlayParameters() {
+        this.gameLevel = this.settings.levels[this.currentLevel]
+        this.numbers = this.generateNumbers();
+        this.operations = this.generateOperations();
+        this.hits = 0;
     }
     generateNumbers() {
         const numbers = [];
@@ -92,26 +78,21 @@ export class Game {
     sayNumber(counter) {
         if (counter == 0) {
             this.speak(`${this.numbers[counter]}`);
-        } else if (counter >= this.gameLevel.n && counter < this.numbers.length) {
+        } else if (counter > 0 && counter < this.numbers.length) {
             const operation = this.getOperationName(this.operations[counter - 1]);
             this.speak(`${operation} ${this.numbers[counter]}`)
         } else if (counter == this.numbers.length - 1) {
             this.speak(`${this.numbers[counter]}`);
         }
     }
-    printResult() {
-        const score = 100 * this.hits / this.operations.length;
-        console.log(`Rezultat: ${this.hits}/${this.operations.length} - ${score.toFixed(2)}%`);
-
-        if (score >= this.settings.passScore) {
-            console.log('Odlicno! Prelazis na sledeci nivo!');
-            if (this.currentLevel < this.settings.levels.length - 1) this.currentLevel++;
-        } else if (score < this.settings.passScore && score >= this.settings.failScore) {
-            console.log('Bravo! Ostajes na istom nivou!');
-        } else {
-            console.log('Ne prolazis!');
-            if (this.currentLevel > 1) this.currentLevel--;
-        }
+    printScore() {
+        resultString = `Rezultat: ${this.hits}/${this.operations.length} - ${this.score.toFixed(2)}%`;
+        levelString = this.getLevelString();
+        console.log(`${resultString}\n${levelString}`)
+    }
+    printLevelDescription() {
+        console.log(`Nivo ${this.currentLevel + 1}:`);
+        console.log(`Izvrsi zadate operacije (mogu biti ${this.gameLevel.operations.join(', ')}) nad ${this.gameLevel.n + 1} ${this.gameLevel.n + 1 > 4 ? 'brojeva' : 'broja'} u nizu od ${this.gameLevel.numRange[0]} do ${this.gameLevel.numRange[1]}.`);
     }
     getOperationName(operation) {
         switch (operation) {
@@ -119,7 +100,51 @@ export class Game {
                 return 'plus';
             case '-':
                 return 'minus';
+            case '/':
+                return 'podeljeno sa';
+            case '*':
+                return 'puta';
         }
+    }
+    getLevelString() {
+        switch (this.levelOffset) {
+            case 0:
+                return 'Ostajes na istom nivou!';
+            case 1:
+                return 'Prelazis na visi nivo!';
+            case -1:
+                return 'Padas jedan nivo nize.';
+            default:
+                break;
+        }
+    }
+    score() {
+        this.score = 100 * this.hits / this.operations.length;
+        if (this.score >= this.settings.passScore && this.currentLevel < this.settings.levels.length - 1) {
+            this.levelOffset = 1;
+        } else if (this.score < this.settings.failScore && this.currentLevel > 1) {
+            this.levelOffset = -1;
+        } else {
+            this.levelOffset = 0;
+        }
+        this.currentLevel += this.levelOffset;
+    }
+    stopGame(gameInterval) {
+        clearInterval(gameInterval);
+        this.score();
+        this.printScore();
+        this.readline.close();
+        this.startNewGame();
+    }
+    async runTrial(operands, operations) {
+        let result = this.calculateResult(operands, operations);
+        const answer = await this.readline.question('Resultat: ')
+        if (parseInt(answer) == result) {
+            console.log('√');
+            this.hits++
+        } else {
+            console.log('X');
+        };
     }
 }
 

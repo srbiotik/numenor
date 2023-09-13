@@ -2,17 +2,20 @@
   "name": "numenor",
   "version": "1.0.0",
   "description": "An application designed to help children learn to add an subtract",
-  "main": "main.js",
+  "main": "bin/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "bin": {
-    "numenor": "./bin/main.js"
+    "numenor": "./bin/index.js"
   },
   "type": "module",
   "author": "Milos Grujic",
   "license": "ISC",
   "dependencies": {
     "yargs": "^17.7.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
