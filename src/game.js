@@ -86,8 +86,8 @@ export class Game {
         }
     }
     printScore() {
-        resultString = `Rezultat: ${this.hits}/${this.operations.length} - ${this.score.toFixed(2)}%`;
-        levelString = this.getLevelString();
+        const resultString = `Rezultat: ${this.hits}/${this.operations.length} - ${this.score.toFixed(2)}%`;
+        const levelString = this.getLevelString();
         console.log(`${resultString}\n${levelString}`)
     }
     printLevelDescription() {
