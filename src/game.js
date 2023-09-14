@@ -1,20 +1,20 @@
 // Desc: Main game file
-import * as readline from 'node:readline/promises';
-import { stdin as input, stdout as output } from 'node:process';
-import { exec } from 'child_process';
+const readline = require('node:readline/promises');
+const { stdin, stdout } = require('node:process');
+const { exec } = require('child_process');
 
-import { getDefaultSettings } from './settings.js';
+const { getDefaultSettings } = require('./settings.js');
 
 
 // Constructs the main game object
-export class Game {
+class Game {
     constructor(options) {
         this.options = options;
         this.settings = getDefaultSettings();
         this.currentLevel = this.settings.defaultLevel;
     }
     async startNewGame() {
-        this.readline = readline.createInterface({ input, output });
+        this.readline = readline.createInterface({ input: stdin, output: stdout });
         this.setGamePlayParameters();
         this.printLevelDescription();
         if (await this.readline.question('Nova igra? (da/ne) ') == 'da') {
@@ -129,13 +129,6 @@ export class Game {
         }
         this.currentLevel += this.levelOffset;
     }
-    stopGame(gameInterval) {
-        clearInterval(gameInterval);
-        this.score();
-        this.printScore();
-        this.readline.close();
-        this.startNewGame();
-    }
     async runTrial(operands, operations) {
         let result = this.calculateResult(operands, operations);
         const answer = await this.readline.question('Resultat: ')
@@ -146,6 +139,15 @@ export class Game {
             console.log('X');
         };
     }
+    stopGame(gameInterval) {
+        clearInterval(gameInterval);
+        this.score();
+        this.printScore();
+        this.readline.close();
+        this.startNewGame();
+    }
 }
+
+module.exports = { Game };
 
 

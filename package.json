@@ -4,12 +4,11 @@
   "description": "An application designed to help children learn to add an subtract",
   "main": "bin/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "ENVIRONMENT=test jest"
   },
   "bin": {
     "numenor": "./bin/index.js"
   },
-  "type": "module",
   "author": "Milos Grujic",
   "license": "ISC",
   "dependencies": {

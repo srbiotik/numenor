@@ -2,7 +2,7 @@
     "rounds": 5,
     "passScore": 80,
     "failScore": 50,
-    "defaultLevel": 1,
+    "defaultLevel": 0,
     "preventNegativeResults": true,
     "levels": [
         {
